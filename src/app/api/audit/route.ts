@@ -10,23 +10,27 @@ export async function POST(request: Request) {
     const result = runAudit(input)
     const id = uuidv4()
 
-    const { error } = await supabase.from('audits').insert({
-      id,
-      tools_data: input.tools,
-      results_data: result,
-      monthly_savings: result.monthlySavings,
-      annual_savings: result.annualSavings,
-      use_case: input.useCase,
-      team_size: input.teamSize,
-      tool_count: input.tools.length,
-    })
+    try {
+      const { error } = await supabase.from('audits').insert({
+        id,
+        tools_data: input.tools,
+        results_data: result,
+        monthly_savings: result.monthlySavings,
+        annual_savings: result.annualSavings,
+        use_case: input.useCase,
+        team_size: input.teamSize,
+        tool_count: input.tools.length,
+      })
 
-    if (error) {
-      throw error
+      if (error) {
+        console.warn('Failed to save audit to Supabase:', error.message)
+      }
+    } catch (error) {
+      console.warn('Failed to save audit to Supabase:', error)
     }
 
     return NextResponse.json({ auditId: id, result })
   } catch {
-    return NextResponse.json({ error: 'Failed to save audit' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to run audit' }, { status: 500 })
   }
 }
