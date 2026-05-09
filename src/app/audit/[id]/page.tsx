@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase'
 import type { AuditResult } from '@/lib/types'
 
 interface AuditPageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 interface AuditRow {
@@ -28,7 +28,8 @@ async function getAudit(id: string): Promise<AuditRow | null> {
 }
 
 export async function generateMetadata({ params }: AuditPageProps): Promise<Metadata> {
-  const audit = await getAudit(params.id)
+  const { id } = await params
+  const audit = await getAudit(id)
   const monthlySavings = audit?.monthly_savings ?? 0
   const description = 'See this AI spend audit and find out where your team is overspending'
 
@@ -46,7 +47,8 @@ export async function generateMetadata({ params }: AuditPageProps): Promise<Meta
 }
 
 export default async function AuditPage({ params }: AuditPageProps) {
-  const audit = await getAudit(params.id)
+  const { id } = await params
+  const audit = await getAudit(id)
 
   if (!audit) {
     return (
@@ -74,7 +76,7 @@ export default async function AuditPage({ params }: AuditPageProps) {
           BurnLens
         </Link>
         <div className="mt-8">
-          <AuditResults result={audit.results_data} auditId={params.id} />
+          <AuditResults result={audit.results_data} auditId={id} />
         </div>
       </div>
     </main>

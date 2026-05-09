@@ -1,10 +1,25 @@
-﻿import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js'
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+const fallbackUrl = 'https://placeholder.supabase.co'
+const fallbackKey = 'placeholder-anon-key'
 
-if (!url || !key) {
-  throw new Error('Missing Supabase environment variables')
+function isValidSupabaseUrl(value: string | undefined): value is string {
+  if (!value) {
+    return false
+  }
+
+  try {
+    const url = new URL(value)
+    return url.protocol === 'https:' || url.protocol === 'http:'
+  } catch {
+    return false
+  }
 }
+
+const url = isValidSupabaseUrl(process.env.NEXT_PUBLIC_SUPABASE_URL)
+  ? process.env.NEXT_PUBLIC_SUPABASE_URL
+  : fallbackUrl
+
+const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || fallbackKey
 
 export const supabase = createClient(url, key)
