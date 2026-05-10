@@ -25,30 +25,30 @@ export default function ToolRow({ recommendation }: ToolRowProps) {
     recommendation.monthlySaving > 0 ? 'text-emerald-700 font-semibold' : 'text-gray-500'
 
   return (
-    <div className="grid gap-4 px-5 py-5 md:grid-cols-[1.1fr_0.9fr_1fr_1.4fr_0.8fr_0.8fr] md:items-start">
-      <div>
+    <div className="grid grid-cols-[1fr_auto_auto] items-center gap-3 px-5 py-5 sm:gap-4 md:grid-cols-[1.1fr_0.9fr_1fr_1.4fr_0.8fr_0.8fr] md:items-start">
+      <div className="min-w-0">
         <p className="font-semibold text-gray-950">{recommendation.toolName}</p>
-        <p className="mt-1 text-sm text-gray-500">{recommendation.reasoning}</p>
+        <p className="mt-1 hidden text-sm text-gray-500 sm:block">{recommendation.reasoning}</p>
       </div>
 
-      <div>
+      <div className="hidden sm:block">
         <p className="text-sm font-medium text-gray-700">Current plan</p>
         <p className="mt-1 text-sm text-gray-600">{recommendation.currentPlan}</p>
       </div>
 
-      <div>
+      <div className="hidden sm:block">
         <p className="text-sm font-medium text-gray-700">Current spend</p>
         <p className="mt-1 text-sm text-gray-600">{formatCurrency(recommendation.currentSpend)}</p>
       </div>
 
-      <div>
+      <div className="hidden sm:block">
         <p className="text-sm font-medium text-gray-700">Recommended action</p>
         <p className="mt-1 text-sm text-gray-600">{recommendation.recommendedAction}</p>
       </div>
 
       <div>
-        <p className="text-sm font-medium text-gray-700">Savings</p>
-        <p className={`mt-1 text-sm ${savingClass}`}>
+        <p className="hidden text-sm font-medium text-gray-700 sm:block">Savings</p>
+        <p className={`text-sm sm:mt-1 ${savingClass}`}>
           {formatCurrency(recommendation.monthlySaving)}
         </p>
       </div>

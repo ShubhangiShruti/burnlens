@@ -53,6 +53,34 @@ function keepRecommendation(tool: ToolInput): Recommendation {
   )
 }
 
+function isRedundantRecommendation(recommendation: Recommendation): boolean {
+  const text = `${recommendation.recommendedAction} ${recommendation.reasoning}`.toLowerCase()
+
+  return text.includes('redundant') || text.includes('overlap') || text.includes('consolidate')
+}
+
+export function calculateBurnScore(recommendations: Recommendation[]): number {
+  const penalty = recommendations.reduce((scorePenalty, recommendation) => {
+    let nextPenalty = scorePenalty
+
+    if (recommendation.severity === 'switch') {
+      nextPenalty += 15
+    }
+
+    if (recommendation.severity === 'consider') {
+      nextPenalty += 8
+    }
+
+    if (isRedundantRecommendation(recommendation)) {
+      nextPenalty += 5
+    }
+
+    return nextPenalty
+  }, 0)
+
+  return Math.max(0, Math.round(100 - penalty))
+}
+
 export function runAudit(input: AuditInput): AuditResult {
   const recommendations: Recommendation[] = []
   const coveredToolIds = new Set<string>()
@@ -256,6 +284,7 @@ export function runAudit(input: AuditInput): AuditResult {
     recommendedMonthlyTotal,
     monthlySavings,
     annualSavings,
+    burnScore: calculateBurnScore(recommendations),
     credexRecommended: monthlySavings > 500,
     alreadyOptimal,
   }

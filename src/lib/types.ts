@@ -31,6 +31,7 @@ export interface AuditResult {
   recommendedMonthlyTotal: number
   monthlySavings: number
   annualSavings: number
+  burnScore?: number
   credexRecommended: boolean
   alreadyOptimal: boolean
   summary?: string

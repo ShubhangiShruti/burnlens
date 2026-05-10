@@ -37,3 +37,40 @@
 - Research and fill PRICING_DATA.md with verified numbers
 - Begin writing GTM.md and ECONOMICS.md
 - Conduct at least 1 user interview
+
+## Day 2 — 2026-05-10
+
+**Hours worked:** 3
+
+**What I did:**
+- Verified all AI tool pricing against official vendor pages using
+  ChatGPT and Gemini as research assistants. Discovered Windsurf Pro
+  increased from $15 to $20/month — updated PRICING_DATA.md and
+  auditEngine.ts accordingly
+- Added 6 UI improvements via Codex: spend breakdown chart (Recharts),
+  BurnLens Score (0-100 efficiency rating), empty state with clickable
+  tool chips, social proof section with stats and testimonials, loading
+  skeletons, and mobile responsiveness fixes
+- Filled in first AI-drafted versions of PRICING_DATA.md, PROMPTS.md,
+  TESTS.md, LANDING_COPY.md, GTM.md, METRICS.md — all marked for
+  human review and will be edited further
+- Reviewed Gemini's strategic analysis of BurnLens and identified
+  remaining gaps to address
+- Verified all 6 MVP features working end to end on localhost: form
+  inputs, audit engine, results page, AI summary fallback, email
+  capture (confirmation email delivered to Gmail), shareable URL
+- Fixed share button — was copying localhost URL instead of the correct
+  /audit/[id] path. Changed to use window.location.origin + auditId
+- Confirmed 8 tests still passing after all changes
+- Began studying the complete project file structure to understand the
+  full data flow from form input through audit engine through API
+  routes through Supabase to results page — this will feed directly
+  into ARCHITECTURE.md tomorrow
+
+**What I learned:**
+- AI pricing changes frequently — Windsurf Pro changed price since
+  project started. Always verify against official vendor pages
+- The share button was using window.location.href which returns the
+  current page URL, not the audit-specific URL. Need to construct
+  the share URL explicitly using window.location.origin + auditId
+- Floating point rounding causes number inputs to show 80.02 instead

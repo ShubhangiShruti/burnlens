@@ -7,6 +7,7 @@ import type { AuditInput, AuditResult, ToolInput, UseCase } from '@/lib/types'
 
 interface AuditFormProps {
   onAuditComplete: (result: AuditResult, auditId: string) => void
+  onAuditLoadingChange?: (isLoading: boolean) => void
 }
 
 interface PersistedFormState {
@@ -30,6 +31,12 @@ const initialFormState: PersistedFormState = {
   useCase: 'mixed',
 }
 
+const exampleTools = [
+  { id: 'cursor', name: 'Cursor' },
+  { id: 'chatgpt', name: 'ChatGPT' },
+  { id: 'claude', name: 'Claude' },
+]
+
 function planMonthlySpend(plan: ToolPlan, seats: number): number {
   if (typeof plan.pricePerSeat === 'number') {
     return Math.round(plan.pricePerSeat * seats * 100) / 100
@@ -38,7 +45,7 @@ function planMonthlySpend(plan: ToolPlan, seats: number): number {
   return Math.round((plan.flatPrice ?? 0) * 100) / 100
 }
 
-export default function AuditForm({ onAuditComplete }: AuditFormProps) {
+export default function AuditForm({ onAuditComplete, onAuditLoadingChange }: AuditFormProps) {
   const [formState, setFormState] = useFormPersistence<PersistedFormState>('burnlens-form', initialFormState)
   const [toolToAdd, setToolToAdd] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -102,6 +109,7 @@ export default function AuditForm({ onAuditComplete }: AuditFormProps) {
     }
 
     setIsSubmitting(true)
+    onAuditLoadingChange?.(true)
 
     try {
       const input: AuditInput = {
@@ -147,6 +155,7 @@ export default function AuditForm({ onAuditComplete }: AuditFormProps) {
       setError('Unable to run your audit right now. Please try again.')
     } finally {
       setIsSubmitting(false)
+      onAuditLoadingChange?.(false)
     }
   }
 
@@ -159,6 +168,7 @@ export default function AuditForm({ onAuditComplete }: AuditFormProps) {
             type="number"
             min={1}
             value={formState.teamSize}
+            onFocus={(e) => e.target.select()}
             onChange={(event) =>
               setFormState((current) => ({ ...current, teamSize: Number(event.target.value) }))
             }
@@ -204,6 +214,44 @@ export default function AuditForm({ onAuditComplete }: AuditFormProps) {
       </label>
 
       <div className="space-y-4">
+        {formState.selectedTools.length === 0 ? (
+          <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 px-5 py-8 text-center">
+            <svg
+              className="mx-auto h-9 w-9 text-gray-400"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"
+              />
+            </svg>
+            <h3 className="mt-4 text-base font-bold text-gray-950">
+              Add your first AI tool to get started
+            </h3>
+            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-600">
+              Most startups use 2-4 tools. Add each one and we&apos;ll find where you&apos;re
+              overspending.
+            </p>
+            <div className="mt-4 flex flex-wrap justify-center gap-2">
+              {exampleTools.map((tool) => (
+                <button
+                  key={tool.id}
+                  type="button"
+                  onClick={() => addTool(tool.id)}
+                  className="rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700 hover:bg-gray-300"
+                >
+                  {tool.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
         {formState.selectedTools.map((selectedTool, index) => {
           const pricingTool = TOOLS.find((tool) => tool.id === selectedTool.toolId)
           const currentPlan = pricingTool?.plans.find((plan) => plan.id === selectedTool.plan)
@@ -254,6 +302,7 @@ export default function AuditForm({ onAuditComplete }: AuditFormProps) {
                       type="number"
                       min={1}
                       value={selectedTool.seats}
+                      onFocus={(e) => e.target.select()}
                       onChange={(event) => {
                         const seats = Number(event.target.value)
                         updateTool(index, {
@@ -276,6 +325,7 @@ export default function AuditForm({ onAuditComplete }: AuditFormProps) {
                     min={0}
                     step="0.01"
                     value={selectedTool.monthlySpend}
+                    onFocus={(e) => e.target.select()}
                     onChange={(event) =>
                       updateTool(index, {
                         ...selectedTool,
