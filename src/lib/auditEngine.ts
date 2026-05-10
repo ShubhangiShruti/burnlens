@@ -38,7 +38,7 @@ function individualEquivalent(tool: ToolInput): { label: string; monthlyCost: nu
   if (tool.toolId === 'claude') return { label: 'Claude Pro', monthlyCost: 20 }
   if (tool.toolId === 'chatgpt') return { label: 'ChatGPT Plus', monthlyCost: 20 }
   if (tool.toolId === 'gemini') return { label: 'Gemini Premium', monthlyCost: 19.99 }
-  if (tool.toolId === 'windsurf') return { label: 'Windsurf Pro', monthlyCost: 15 * tool.seats }
+  if (tool.toolId === 'windsurf') return { label: 'Windsurf Pro', monthlyCost: 20 * tool.seats }
 
   return null
 }
@@ -112,8 +112,8 @@ export function runAudit(input: AuditInput): AuditResult {
       if (!recommendation && tool.toolId === 'windsurf' && tool.plan === 'teams') {
         recommendation = makeRecommendation(
           tool,
-          'Switch to Windsurf Pro at $15/seat',
-          tool.monthlySpend - 15 * tool.seats,
+          'Switch to Windsurf Pro at $20/seat',
+          tool.monthlySpend - 20 * tool.seats,
           'Windsurf Teams is often unnecessary for smaller coding teams that only need core AI coding support.',
           'switch',
         )
