@@ -4,12 +4,15 @@ import { useRef, useState } from 'react'
 import AuditForm from '@/components/AuditForm'
 import AuditResults from '@/components/AuditResults'
 import type { AuditResult } from '@/lib/types'
+import Image from "next/image"
+import Link from "next/link"
 
 export default function HomePage() {
   const [auditResult, setAuditResult] = useState<AuditResult | null>(null)
   const [auditId, setAuditId] = useState<string | null>(null)
   const [isAuditLoading, setIsAuditLoading] = useState(false)
   const resultsRef = useRef<HTMLDivElement | null>(null)
+  const [open, setOpen] = useState(false)
 
   function handleAuditComplete(result: AuditResult, id: string) {
     setAuditResult(result)
@@ -35,7 +38,10 @@ export default function HomePage() {
     <main className="min-h-screen bg-white">
       <nav className="border-b border-gray-100">
         <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-5 sm:flex-row sm:items-end sm:justify-between">
+        <Link href="/" className="focus-ring flex items-center gap-3 rounded-sm" onClick={() => setOpen(false)}>
+          <Image src="/logo.png" alt="BurnLens" width={32} height={32} />
           <span className="text-2xl font-bold text-emerald-600">BurnLens</span>
+          </Link>
           <span className="text-sm text-gray-500">Free AI Spend Audit for startup teams</span>
         </div>
       </nav>

@@ -74,3 +74,39 @@
   current page URL, not the audit-specific URL. Need to construct
   the share URL explicitly using window.location.origin + auditId
 - Floating point rounding causes number inputs to show 80.02 instead
+
+## Day 3 — 2026-05-11
+
+**Hours worked:** 0
+
+**What I did:** No work done today. Had other commitments that 
+could not be moved.
+
+**What I learned:** —
+
+**Blockers / what I'm stuck on:** Falling behind on documentation 
+files — ECONOMICS.md, ARCHITECTURE.md, REFLECTION.md, and 
+USER_INTERVIEWS.md all still need to be written.
+
+**Plan for tomorrow:** Compress Day 3 and Day 4 work into one 
+long session. Write all remaining documentation files, fix 
+remaining bugs, take screenshots, run Lighthouse check.
+
+
+## Day 4 (Sitting 1) — 2026-05-12 (4am)
+
+**Hours worked:** 2
+
+**What I did:** 
+ - Code workflow study
+ - Created logo.png and favicon.png from gemini and added to the code
+
+**What I learned:** — if not created vercel gives its own favicon
+
+**Blockers / what I'm stuck on:** Falling behind on documentation 
+files — ECONOMICS.md, ARCHITECTURE.md, REFLECTION.md, and 
+USER_INTERVIEWS.md all still need to be written.
+
+**Plan for Today:** Compress Day 3 and Day 4 work into one 
+long session. Write all remaining documentation files, fix 
+remaining bugs, take screenshots, run Lighthouse check.

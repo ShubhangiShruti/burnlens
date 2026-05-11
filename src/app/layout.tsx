@@ -4,6 +4,9 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'BurnLens',
   description: 'Free AI Spend Audit for startup and engineering teams.',
+  icons: {
+    icon: '/favicon.png',
+  },
 }
 
 export default function RootLayout({
