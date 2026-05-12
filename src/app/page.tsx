@@ -120,7 +120,7 @@ export default function HomePage() {
       </section>
 
       <footer className="border-t border-gray-100 px-4 py-8 text-center text-sm text-gray-500">
-        Built by BurnLens · Powered by Credex · Not affiliated with any AI vendor
+        Built by BurnLens · Powered by Credex · Built by Shubhangi Shruti · Not affiliated with any AI vendor
       </footer>
     </main>
   )
