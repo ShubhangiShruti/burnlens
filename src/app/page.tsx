@@ -76,29 +76,28 @@ export default function HomePage() {
           <div className="grid gap-4 md:grid-cols-2">
             <figure className="rounded-lg border border-gray-200 border-l-4 border-l-emerald-500 bg-white p-5 shadow-sm">
               <blockquote className="text-base leading-7 text-gray-700">
-                “We were paying for three AI tools that basically did the same thing. BurnLens
-                showed us in 30 seconds.”
+                “This tool amazingly does the analysis of our AI tool's usage and 
+                  recommends certain actions which can be taken to optimize the cost spent on AI tools.”
               </blockquote>
               <figcaption className="mt-4">
-                <p className="font-semibold text-gray-950">Rohan M.</p>
-                <p className="text-sm text-gray-500">CTO, Early-stage SaaS</p>
+                <p className="font-semibold text-gray-950">Selwyne M.</p>
+                <p className="text-sm text-gray-500">Media Manager and Analyst, Bored Panda</p>
               </figcaption>
             </figure>
 
             <figure className="rounded-lg border border-gray-200 border-l-4 border-l-emerald-500 bg-white p-5 shadow-sm">
               <blockquote className="text-base leading-7 text-gray-700">
-                “Saved us $340/month just by switching Copilot tiers. Took less time than my
-                morning coffee.”
+                “The speed at which Burnlens gives the AI report Audit is surely impressive”
               </blockquote>
               <figcaption className="mt-4">
-                <p className="font-semibold text-gray-950">Priya S.</p>
-                <p className="text-sm text-gray-500">Engineering Lead</p>
+                <p className="font-semibold text-gray-950">Anurag B.</p>
+                <p className="text-sm text-gray-500">Cloud engineer/ Backend developer, EXL</p>
               </figcaption>
             </figure>
           </div>
 
           <p className="text-sm italic text-gray-500">
-            (Statistics are illustrative. Testimonials are mocked for demonstration purposes.)
+            (Statistics are illustrative. Testimonials are picked from User Interviews.)
           </p>
         </section>
 

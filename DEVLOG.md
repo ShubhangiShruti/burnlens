@@ -1,3 +1,39 @@
+## Day 0 — 2026-05-08
+
+**Hours worked:** 2
+
+**What I did:**
+- Read through the complete assignment PDF and understood the full
+  scope of what the assignment needed to be
+- Researched the Anthropic Claude API and how LLM API calls work,
+  since I had not used it directly before
+- Researched Supabase, Resend, and Vercel to understand how they
+  would fit together
+- Decided upon the name Burnlens after going through a few like SpendPilot, 
+  Stacklens (both already existing)
+- Sketched a rough mental picture of the UI — decided to start with
+  a clean, functional layout and improve visual design on the last day
+- Listed out the 6 MVP features and mapped which ones needed backend
+  support vs which could be pure frontend logic
+- Noted that the audit engine should use hardcoded deterministic logic,
+  not AI — the assignment hints at this and it is the right call
+
+**What I learned:**
+- The assignment is entrepreneurial, not just technical — the
+  documentation files carry as much weight as the code
+- Shareable public URLs require server-side Open Graph tags, which
+  means Next.js App Router is the right choice over plain React
+
+**Blockers / what I'm stuck on:**
+- No code written yet — just planning
+
+**Plan for tomorrow:**
+- Set up GitHub repository, Next.js project, and Supabase
+- Scaffold all core files and get a basic deployment on Vercel
+- Use Codex to generate the initial project structure
+
+---
+
 ## Day 1 — 2026-05-09
 
 **Hours worked:** 4
@@ -77,7 +113,7 @@
 
 ## Day 3 — 2026-05-11
 
-**Hours worked:** 0
+**Hours worked:** 1
 
 **What I did:** No work done today. Had other commitments that 
 could not be moved.
@@ -95,35 +131,41 @@ remaining bugs, take screenshots, run Lighthouse check.
 
 ## Day 4 — 2026-05-12
 
-**Hours worked:** 5
+**Hours worked:** 6
 
 **What I did:**
 - Added logo.png and favicon.png (generated with Gemini, integrated
   into Next.js app/layout.tsx and public/ folder) — committed at 4am
 - Returned to work at 7pm for documentation sprint
-- Wrote complete ECONOMICS.md: unit economics, LTV/CAC model, 
+- Wrote complete ECONOMICS.md: unit economics, LTV/CAC model,
   conversion funnel, $1M ARR breakdown, sensitivity analysis
 - Wrote complete ARCHITECTURE.md: Mermaid system diagram, data flow
   walkthrough, stack rationale table, 10k audits/day scaling analysis
-- [add anything else you do tonight: REFLECTION.md, bug fixes, etc.]
+- Restructured homepage into 3 explainer sections: What is BurnLens,
+  feature cards (Who is it for / What do you get), dark How-to band
+- Added Gemini-generated hero image to homepage explainer section
 
 **What I learned:**
 - Working through the LTV model forced me to understand Credex's
   actual business — the margin is in the credit spread, not a
-  subscription fee, which changes how you think about churn
-- The Mermaid diagram process made me realize the "best-effort write"
-  pattern is the most important architectural decision in the whole
-  project — everything else flows from that
+  subscription fee
+- The Mermaid diagram process clarified that the best-effort write
+  pattern is the most important architectural decision in the project
 
 **Blockers / what I'm stuck on:**
-- USER_INTERVIEWS.md still needs 3 real conversations — this is the
-  highest remaining risk item
-- Lighthouse score not yet run
+- USER_INTERVIEWS.md still needs 3 real conversations
+- REFLECTION.md not yet written
+- Anthropic API credits at $0 — AI summary running on fallback
 
 **Plan for tomorrow:**
-- Complete USER_INTERVIEWS.md (3 real conversations)
-- Run Lighthouse at pagespeed.web.dev — targets: Perf ≥ 85, A11y ≥ 90
-- Add screenshots to README.md
-- Final commit and submission prep
-- Write Day 5 DEVLOG entry
+- Fix audit engine seat over-provisioning bug
+- Fix Claude API model string
+- Complete USER_INTERVIEWS.md
+- Write REFLECTION.md
+- Add README screenshots and Loom video
+- Final commit and submission
+
+---
+
+
 
