@@ -76,7 +76,7 @@ export default function HomePage() {
           <div className="grid gap-4 md:grid-cols-2">
             <figure className="rounded-lg border border-gray-200 border-l-4 border-l-emerald-500 bg-white p-5 shadow-sm">
               <blockquote className="text-base leading-7 text-gray-700">
-                “This tool amazingly does the analysis of our AI tool's usage and 
+                “This tool amazingly does the analysis of our AI tool&apos;s usage and 
                   recommends certain actions which can be taken to optimize the cost spent on AI tools.”
               </blockquote>
               <figcaption className="mt-4">

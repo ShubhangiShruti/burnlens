@@ -1,12 +1,6 @@
 import jsPDF from 'jspdf'
 import type { AuditResult } from './types'
 
-export async function exportAuditPDF(elementId: string): Promise<void> {
-  // Get the result data from the DOM isn't needed — 
-  // we receive it via the result prop. This signature
-  // kept for backward compatibility.
-  throw new Error('Use exportAuditPDFFromData instead')
-}
 
 export function exportAuditPDFFromData(result: AuditResult): void {
   const doc = new jsPDF('p', 'mm', 'a4')
@@ -16,15 +10,7 @@ export function exportAuditPDFFromData(result: AuditResult): void {
   let y = 0
 
   // ── Helpers ──────────────────────────────────────────────
-  function hex(color: string) {
-    const r = parseInt(color.slice(1, 3), 16)
-    const g = parseInt(color.slice(3, 5), 16)
-    const b = parseInt(color.slice(5, 7), 16)
-    doc.setDrawColor(r, g, b)
-    doc.setFillColor(r, g, b)
-    doc.setTextColor(r, g, b)
-  }
-
+  
   function textColor(color: string) {
     const r = parseInt(color.slice(1, 3), 16)
     const g = parseInt(color.slice(3, 5), 16)
