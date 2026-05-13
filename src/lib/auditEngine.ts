@@ -98,6 +98,17 @@ export function runAudit(input: AuditInput): AuditResult {
         'Enterprise pricing is custom, so BurnLens needs the real monthly cost before estimating savings.',
         'consider',
       )
+    } else if (isTeamOrBusinessPlan(tool.plan) && tool.seats > input.teamSize * 1.2) {
+      const excessSeats = tool.seats - input.teamSize
+      const costPerSeat = tool.seats > 0 ? tool.monthlySpend / tool.seats : 0
+      const saving = Math.round(excessSeats * costPerSeat)
+      recommendation = makeRecommendation(
+        tool,
+        `Reduce from ${tool.seats} seats to ${input.teamSize} seats — you are paying for ${excessSeats} unused seat${excessSeats > 1 ? 's' : ''}`,
+        saving,
+        `Your team has ${input.teamSize} people but you are paying for ${tool.seats} seats. Removing ${excessSeats} unused seat${excessSeats > 1 ? 's' : ''} saves $${saving}/month at your current per-seat rate.`,
+        'switch',
+      )
     } else if (isTeamOrBusinessPlan(tool.plan) && tool.seats < 3) {
       const equivalent = individualEquivalent(tool)
 
