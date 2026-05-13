@@ -126,7 +126,7 @@ export default function AuditResults({ result, auditId, isLoading = false }: Aud
     setIsGeneratingPDF(true)
 
     try {
-      await exportAuditPDF(result)
+      await exportAuditPDF('audit-report-content')
     } catch {
       window.alert('PDF export failed — please try again.')
     } finally {
@@ -135,7 +135,7 @@ export default function AuditResults({ result, auditId, isLoading = false }: Aud
   }
 
   return (
-    <section className="space-y-8">
+    <section id="audit-report-content" className="space-y-8">
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm md:p-8">
         <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
