@@ -11,7 +11,7 @@ import {
   YAxis,
 } from 'recharts'
 import { calculateBurnScore } from '@/lib/auditEngine'
-import { exportAuditPDF } from '@/lib/exportPDF'
+import { exportAuditPDFFromData } from '@/lib/exportPDF'
 import type { AuditResult, Recommendation } from '@/lib/types'
 import LeadCaptureModal from './LeadCaptureModal'
 import SummaryCard from './SummaryCard'
@@ -126,7 +126,7 @@ export default function AuditResults({ result, auditId, isLoading = false }: Aud
     setIsGeneratingPDF(true)
 
     try {
-      await exportAuditPDF('audit-report-content')
+      exportAuditPDFFromData(result)
     } catch {
       window.alert('PDF export failed — please try again.')
     } finally {
