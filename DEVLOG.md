@@ -167,5 +167,47 @@ remaining bugs, take screenshots, run Lighthouse check.
 
 ---
 
+## Day 5 — 2026-05-13
+
+**Hours worked:** 8
+
+**What I did:**
+- Fixed critical audit engine bug: seat over-provisioning logic was
+  missing. The engine had no check comparing seats to teamSize, so
+  a team of 4 with 15 seats would return $0 savings. Added
+  over-provisioning check — Test A1 now correctly returns $742/month
+  savings across 3 tools
+- Fixed Claude API model string: was 'claude-haiku-4-5' (invalid),
+  corrected to 'claude-haiku-4-5-20251001'. API reaches Anthropic
+  successfully; fallback runs due to $0 account balance but
+  graceful degradation works as designed
+- Implemented and fixed PDF export: replaced html2canvas approach
+  (incompatible with Recharts SVG) with jsPDF text-based layout —
+  colored header band, savings hero, per-tool table, Credex CTA,
+  page-numbered footer
+- Added Credex CTA banner for audits showing >$500/month savings
+- Fixed Codex Prompt 2: Credex credit surface prominent for high
+  savings audits, subtle text link for low savings, clean message
+  for already-optimal stacks
+- Ran Lighthouse audit: Mobile 88/96/100/100, Desktop 97/96/100/100
+  — all targets met
+- Conducted user interviews and wrote USER_INTERVIEWS.md
+- Wrote REFLECTION.md
+- Added README screenshots and 30-second Loom screen recording
+- Final commit and submitted assignment
+
+**What I learned:**
+- html2canvas cannot capture Recharts SVG charts — jsPDF text layout
+  is more reliable for server-generated reports
+- Vercel environment variables require a redeploy after being updated,
+  not just a save
+- The most expensive bugs are the silent ones — the Claude API was
+  failing silently for hours because the try/catch swallowed the
+  model-not-found error with no console output
+  
+**Blockers / what I'm stuck on:**
+- Anthropic API balance at $0 — fallback summary ships instead of
+  Claude-generated paragraph. Fallback is accurate and meets the
+  graceful degradation requirement
 
 
