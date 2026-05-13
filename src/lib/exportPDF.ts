@@ -224,7 +224,7 @@ export function exportAuditPDFFromData(result: AuditResult): void {
     textColor('#9ca3af')
     doc.setFontSize(7)
     doc.setFont('helvetica', 'normal')
-    doc.text('BurnLens · burnlens.vercel.app · Powered by Credex', margin, 293)
+    doc.text('BurnLens · burnlens.vercel.app · Built by Shubhangi Shruti · Powered by Credex', margin, 293)
     doc.text(`Page ${p} of ${totalPages}`, pageW - margin, 293, { align: 'right' })
   }
 
