@@ -11,6 +11,7 @@ import {
   YAxis,
 } from 'recharts'
 import { calculateBurnScore } from '@/lib/auditEngine'
+import { exportAuditPDF } from '@/lib/exportPDF'
 import type { AuditResult, Recommendation } from '@/lib/types'
 import LeadCaptureModal from './LeadCaptureModal'
 import SummaryCard from './SummaryCard'
@@ -85,6 +86,7 @@ function AuditResultsSkeleton() {
 export default function AuditResults({ result, auditId, isLoading = false }: AuditResultsProps) {
   const [isLeadModalOpen, setIsLeadModalOpen] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
 
   if (isLoading || !result) {
     return <AuditResultsSkeleton />
@@ -102,6 +104,8 @@ export default function AuditResults({ result, auditId, isLoading = false }: Aud
       !best || recommendation.monthlySaving > best.monthlySaving ? recommendation : best,
     undefined,
   )
+  const totalMonthlySavings = Number(result.monthlySavings)
+  const annualizedSavings = totalMonthlySavings * 12
 
   async function handleShare() {
     if (typeof window === 'undefined') {
@@ -112,6 +116,22 @@ export default function AuditResults({ result, auditId, isLoading = false }: Aud
     await window.navigator.clipboard.writeText(shareUrl)
     setCopied(true)
     window.setTimeout(() => setCopied(false), 2000)
+  }
+
+  async function handleDownloadPDF() {
+    if (!result) {
+      return
+    }
+
+    setIsGeneratingPDF(true)
+
+    try {
+      await exportAuditPDF(result)
+    } catch {
+      window.alert('PDF export failed — please try again.')
+    } finally {
+      setIsGeneratingPDF(false)
+    }
   }
 
   return (
@@ -162,7 +182,16 @@ export default function AuditResults({ result, auditId, isLoading = false }: Aud
         </div>
       </div>
 
-      <SummaryCard summary={result.summary} isLoading={false} />
+      <SummaryCard summary={result.aiSummary ?? result.summary} isLoading={false} />
+
+      <button
+        type="button"
+        onClick={handleDownloadPDF}
+        disabled={isGeneratingPDF}
+        className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-500 sm:w-auto"
+      >
+        {isGeneratingPDF ? 'Generating...' : '⬇ Download PDF Report'}
+      </button>
 
       <div className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm md:p-6">
         <h3 className="text-lg font-bold text-gray-950">Spend Breakdown</h3>
@@ -208,21 +237,44 @@ export default function AuditResults({ result, auditId, isLoading = false }: Aud
         </div>
       </div>
 
-      {result.credexRecommended ? (
-        <div className="rounded-lg bg-emerald-600 p-6 text-white shadow-sm md:p-8">
-          <h3 className="text-2xl font-bold">Unlock even more savings with Credex credits</h3>
-          <p className="mt-2 max-w-2xl text-emerald-50">
-            Your audit shows meaningful monthly savings. Credex can help you capture discounted AI
-            and cloud credits without waiting for vendor programs.
+      {totalMonthlySavings >= 500 ? (
+        <div className="rounded-lg border border-emerald-200 border-l-4 border-l-green-600 bg-gradient-to-r from-amber-50 to-green-50 p-6 shadow-sm md:p-8">
+          <h3 className="text-2xl font-bold text-gray-950">You qualify for Credex credits</h3>
+          <p className="mt-3 max-w-3xl text-base leading-7 text-gray-700">
+            Your stack has {formatCurrency(totalMonthlySavings)}/month in savings potential. Credex
+            sells discounted AI credits from companies that over-purchased — you could capture this
+            savings starting today.
+          </p>
+          <p className="mt-3 text-lg font-bold text-emerald-700">
+            That&apos;s {formatCurrency(annualizedSavings)}/year back in your budget.
           </p>
           <a
             href="https://credex.rocks"
-            className="mt-5 inline-flex rounded-md bg-white px-5 py-3 text-sm font-semibold text-emerald-700 hover:bg-emerald-50"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-5 inline-flex rounded-md bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700"
           >
-            Visit Credex
+            Get Credex Credits →
           </a>
         </div>
-      ) : null}
+      ) : totalMonthlySavings > 0 ? (
+        <p className="text-sm text-gray-600">
+          Want to save on future AI purchases?{' '}
+          <a
+            href="https://credex.rocks"
+            target="_blank"
+            rel="noreferrer"
+            className="font-semibold text-emerald-700 hover:text-emerald-800"
+          >
+            Credex sells discounted AI credits.
+          </a>
+        </p>
+      ) : (
+        <p className="text-sm text-gray-600">
+          You&apos;re already spending efficiently. We&apos;ll notify you when new optimizations
+          apply to your stack.
+        </p>
+      )}
 
       <LeadCaptureModal
         isOpen={isLeadModalOpen}

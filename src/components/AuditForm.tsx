@@ -21,10 +21,6 @@ interface AuditResponse {
   result: AuditResult
 }
 
-interface SummaryResponse {
-  summary: string
-}
-
 const initialFormState: PersistedFormState = {
   selectedTools: [],
   teamSize: 1,
@@ -129,28 +125,8 @@ export default function AuditForm({ onAuditComplete, onAuditLoadingChange }: Aud
       }
 
       const auditData = (await response.json()) as AuditResponse
-      let result = auditData.result
 
-      try {
-        const summaryResponse = await fetch('/api/summary', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            result,
-            useCase: formState.useCase,
-            teamSize: formState.teamSize,
-          }),
-        })
-
-        if (summaryResponse.ok) {
-          const summaryData = (await summaryResponse.json()) as SummaryResponse
-          result = { ...result, summary: summaryData.summary }
-        }
-      } catch {
-        result = auditData.result
-      }
-
-      onAuditComplete(result, auditData.auditId)
+      onAuditComplete(auditData.result, auditData.auditId)
     } catch {
       setError('Unable to run your audit right now. Please try again.')
     } finally {

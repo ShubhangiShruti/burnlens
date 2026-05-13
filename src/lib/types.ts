@@ -34,6 +34,7 @@ export interface AuditResult {
   burnScore?: number
   credexRecommended: boolean
   alreadyOptimal: boolean
+  aiSummary?: string
   summary?: string
 }
 
