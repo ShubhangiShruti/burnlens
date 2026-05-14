@@ -40,6 +40,14 @@ a marketplace for discounted AI infrastructure credits.
 
 ---
 
+## Lighthouse Scores
+
+### Mobile — 88/96/100/100
+![Lighthouse Mobile](public/screencapture-pagespeed-mobile.png)
+
+### Desktop — 97/96/100/100  
+![Lighthouse Desktop](public/screencapture-pagespeed-desktop.png)
+
 ## Quick Start
 
 ### Prerequisites
