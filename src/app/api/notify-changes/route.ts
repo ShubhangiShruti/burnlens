@@ -37,7 +37,7 @@ function buildEmailHtml(group: EmailGroup): string {
         `<li>${escapeHtml(change.toolName)} (${escapeHtml(change.plan)}): was $${formatPrice(change.oldPrice)}/mo &rarr; now $${formatPrice(change.newPrice)}/mo</li>`,
     )
     .join('')
-  const auditUrl = `https://burnlens.vercel.app/audit/${encodeURIComponent(group.firstAuditId)}`
+  const auditUrl = `https://burnlens.vercel.app/reaudit/${encodeURIComponent(group.firstAuditId)}`
 
   return `
     <p>Hi, pricing has changed for tools in your previous audit.</p>
