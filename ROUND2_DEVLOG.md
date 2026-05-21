@@ -56,6 +56,16 @@ Tested on preview URL:
 - `POST /api/notify-changes` returns `{"emailsSent":0,"skipped":0}` ✓
 - `/reaudit/[id]` renders diff view with correct data ✓
 
-## 2026-05-21 17.30 — Bounus features additions
+## 2026-05-21 17:30 — Bonus features added
+Built three bonus features: unsubscribe endpoint at 
+/api/unsubscribe that sets unsubscribed=true in Supabase, 
+public pricing tracker page at /pricing-changes showing 
+current tool rates, and admin dashboard at /admin with 
+live stats and trigger buttons for detect/notify. Added 
+unsubscribed column to Supabase audits table. All three 
+pass build.
 
-## 2026-05-21 18.00 — Working on Documentations
+## 2026-05-21 18:00 — Documentation complete
+Wrote ROUND2_PR.md, ROUND2_DEVLOG.md, ROUND2_REFLECTION.md.
+Opened PR from reaudit-addition into main. Submitted 
+Google Form before 10pm deadline.

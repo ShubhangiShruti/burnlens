@@ -47,6 +47,10 @@ with changed rows highlighted in yellow
   on the fly rather than persisting the new result. This means no DB
   bloat and no stale re-audit results to clean up. Trade-off: the page
   is slower on cold start.
+- **Unsubscribe as a bonus** — shipped it after the 4 core 
+  features were verified working. One-click unsubscribe via 
+  /api/unsubscribe?email= with HTML confirmation page and 
+  unsubscribe link in every notification email. 
 
 ## How to test it manually
 
