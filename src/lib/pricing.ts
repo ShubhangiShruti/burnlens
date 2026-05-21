@@ -27,7 +27,7 @@ export const TOOLS: ToolPricing[] = [
     name: 'GitHub Copilot',
     plans: [
       { id: 'individual', label: 'Individual', pricePerSeat: 10 },
-      { id: 'business', label: 'Business', pricePerSeat: 24 },
+      { id: 'business', label: 'Business', pricePerSeat: 19 },
       { id: 'enterprise', label: 'Enterprise', pricePerSeat: 39 },
     ],
   },
@@ -38,7 +38,7 @@ export const TOOLS: ToolPricing[] = [
       { id: 'free', label: 'Free', flatPrice: 0 },
       { id: 'pro', label: 'Pro', flatPrice: 20 },
       { id: 'max', label: 'Max', flatPrice: 100 },
-      { id: 'team', label: 'Team', pricePerSeat: 35 },
+      { id: 'team', label: 'Team', pricePerSeat: 30 },
       { id: 'enterprise', label: 'Enterprise', pricePerSeat: 0 },
       { id: 'api', label: 'API', flatPrice: 0 },
     ],
