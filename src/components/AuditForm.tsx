@@ -44,6 +44,7 @@ function planMonthlySpend(plan: ToolPlan, seats: number): number {
 export default function AuditForm({ onAuditComplete, onAuditLoadingChange }: AuditFormProps) {
   const [formState, setFormState] = useFormPersistence<PersistedFormState>('burnlens-form', initialFormState)
   const [toolToAdd, setToolToAdd] = useState('')
+  const [email, setEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
 
@@ -112,6 +113,7 @@ export default function AuditForm({ onAuditComplete, onAuditLoadingChange }: Aud
         tools: formState.selectedTools,
         teamSize: formState.teamSize,
         useCase: formState.useCase,
+        ...(email.trim() ? { email: email.trim() } : {}),
       }
 
       const response = await fetch('/api/audit', {
@@ -169,6 +171,19 @@ export default function AuditForm({ onAuditComplete, onAuditLoadingChange }: Aud
           </select>
         </label>
       </div>
+
+      <label className="block">
+        <span className="text-sm font-semibold text-gray-800">
+          Email (optional) — get notified if pricing changes
+        </span>
+        <input
+          type="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          placeholder="you@company.com"
+          className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-gray-950 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+        />
+      </label>
 
       <label className="block">
         <span className="text-sm font-semibold text-gray-800">Add AI tool</span>
