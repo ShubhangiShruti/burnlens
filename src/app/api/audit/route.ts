@@ -101,6 +101,15 @@ export async function POST(request: Request) {
     const aiSummary = await generateAiSummary(input, result)
     const resultWithSummary: AuditResult = { ...result, aiSummary }
     const id = uuidv4()
+    const pricingSnapshot: Record<string, Record<string, number>> = {}
+
+    for (const tool of TOOLS) {
+      pricingSnapshot[tool.id] = {}
+
+      for (const plan of tool.plans) {
+        pricingSnapshot[tool.id][plan.id] = plan.pricePerSeat ?? plan.flatPrice ?? 0
+      }
+    }
 
     try {
       const { error } = await supabase.from('audits').insert({
@@ -112,6 +121,8 @@ export async function POST(request: Request) {
         use_case: input.useCase,
         team_size: input.teamSize,
         tool_count: input.tools.length,
+        pricing_snapshot: pricingSnapshot,
+        user_email: input.email ?? null,
       })
 
       if (error) {
