@@ -17,6 +17,10 @@ interface EmailGroup {
   changes: ChangeNotification[]
 }
 
+interface SubscriptionRow {
+  unsubscribed: boolean | null
+}
+
 function formatPrice(value: number): string {
   return Math.round(value).toLocaleString()
 }
@@ -31,19 +35,23 @@ function escapeHtml(value: string): string {
 }
 
 function buildEmailHtml(group: EmailGroup): string {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://burnlens.vercel.app'
   const changes = group.changes
     .map(
       (change) =>
         `<li>${escapeHtml(change.toolName)} (${escapeHtml(change.plan)}): was $${formatPrice(change.oldPrice)}/mo &rarr; now $${formatPrice(change.newPrice)}/mo</li>`,
     )
     .join('')
-  const auditUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://burnlens.vercel.app'}/reaudit/${encodeURIComponent(group.firstAuditId)}`
+  const auditUrl = `${baseUrl}/reaudit/${encodeURIComponent(group.firstAuditId)}`
 
   return `
     <p>Hi, pricing has changed for tools in your previous audit.</p>
     <ul>${changes}</ul>
     <p>
       <a href="${auditUrl}">Re-run your audit with updated pricing</a>
+    </p>
+    <p style="font-size:12px;color:#999">
+      <a href="${baseUrl}/api/unsubscribe?email=${encodeURIComponent(group.email)}">Unsubscribe from these emails</a>
     </p>
     <p>&mdash; The BurnLens Team</p>
   `
@@ -117,9 +125,25 @@ export async function POST() {
     const { groups, skipped } = groupAuditsByEmail(affectedAudits)
     const resend = new Resend(process.env.RESEND_API_KEY)
     let emailsSent = 0
+    let skippedUnsubscribed = 0
 
     for (const group of groups) {
       try {
+        const { data: subscriptionRows, error: subscriptionError } = await supabase
+          .from('audits')
+          .select('unsubscribed')
+          .eq('user_email', group.email)
+          .returns<SubscriptionRow[]>()
+
+        if (subscriptionError) {
+          console.warn('Failed to check unsubscribe status:', subscriptionError)
+        }
+
+        if (subscriptionRows?.some((row) => row.unsubscribed === true)) {
+          skippedUnsubscribed += 1
+          continue
+        }
+
         const response = await resend.emails.send({
           from: 'BurnLens <onboarding@resend.dev>',
           to: group.email,
@@ -138,7 +162,7 @@ export async function POST() {
       }
     }
 
-    return NextResponse.json({ emailsSent, skipped })
+    return NextResponse.json({ emailsSent, skipped: skipped + skippedUnsubscribed })
   } catch {
     return NextResponse.json({ error: 'Failed to fetch audits' }, { status: 500 })
   }
