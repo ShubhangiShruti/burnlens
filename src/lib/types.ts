@@ -12,6 +12,7 @@ export interface AuditInput {
   tools: ToolInput[]
   teamSize: number
   useCase: UseCase
+  email?: string
 }
 
 export interface Recommendation {
