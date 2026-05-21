@@ -37,7 +37,7 @@ function buildEmailHtml(group: EmailGroup): string {
         `<li>${escapeHtml(change.toolName)} (${escapeHtml(change.plan)}): was $${formatPrice(change.oldPrice)}/mo &rarr; now $${formatPrice(change.newPrice)}/mo</li>`,
     )
     .join('')
-  const auditUrl = `https://burnlens.vercel.app/reaudit/${encodeURIComponent(group.firstAuditId)}`
+  const auditUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://burnlens.vercel.app'}/reaudit/${encodeURIComponent(group.firstAuditId)}`
 
   return `
     <p>Hi, pricing has changed for tools in your previous audit.</p>
@@ -82,6 +82,21 @@ function groupAuditsByEmail(affectedAudits: ReturnType<typeof detectStaleAudits>
     )
 
     groupsByEmail.set(audit.user_email, group)
+  }
+
+  for (const group of groupsByEmail.values()) {
+    const seenChanges = new Set<string>()
+
+    group.changes = group.changes.filter((change) => {
+      const changeKey = `${change.toolName}:${change.plan}`
+
+      if (seenChanges.has(changeKey)) {
+        return false
+      }
+
+      seenChanges.add(changeKey)
+      return true
+    })
   }
 
   return { groups: [...groupsByEmail.values()], skipped }
